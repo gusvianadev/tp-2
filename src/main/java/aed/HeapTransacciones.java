@@ -14,30 +14,51 @@ public class HeapTransacciones {
 
         int ultimoPadre = (longitud - 2) / 2;
 
-        for (int i = ultimoPadre; i >= 0; i--) {
-            int hijoIzq = 2 * i + 1, hijoDer = 2 * i + 2;
-
+        for (int i = 0; i < longitud; i++) {
             nodos[i] = arr[i];
             heap[i] = i;
+            arr[i].heapIndex = i;
+        }
 
-            if (nodos[hijoIzq] == null) {
-                nodos[hijoIzq] = arr[hijoIzq];
-                heap[hijoIzq] = hijoIzq;
-            }
-
-            // Si o si hay hijo izquierdo, pero puede no haber hijo derecho
-            if (hijoDer > arr.length - 1) {
-                continue;
-            }
-
-            if (nodos[hijoDer] == null) {
-                nodos[hijoDer] = arr[hijoDer];
-                heap[hijoDer] = hijoDer;
-            }
-
+        for (int i = ultimoPadre; i >= 0; i--) {
             siftDown(i);
         }
     }
+
+    // Este está acá porque no estoy seguro si el primero es O(n) o O(n log n)
+    // public HeapTransaccionesAlt(Transaccion[] arr) {
+    // int longitud = arr.length;
+    //
+    // this.nodos = new Transaccion[longitud];
+    // this.heap = new int[longitud];
+    // this.size = longitud;
+    //
+    // int ultimoPadre = (longitud - 2) / 2;
+    //
+    // for (int i = ultimoPadre; i >= 0; i--) {
+    // int hijoIzq = 2 * i + 1, hijoDer = 2 * i + 2;
+    //
+    // nodos[i] = arr[i];
+    // heap[i] = i;
+    //
+    // if (nodos[hijoIzq] == null) {
+    // nodos[hijoIzq] = arr[hijoIzq];
+    // heap[hijoIzq] = hijoIzq;
+    // }
+    //
+    // // Si o si hay hijo izquierdo, pero puede no haber hijo derecho
+    // if (hijoDer > arr.length - 1) {
+    // continue;
+    // }
+    //
+    // if (nodos[hijoDer] == null) {
+    // nodos[hijoDer] = arr[hijoDer];
+    // heap[hijoDer] = hijoDer;
+    // }
+    //
+    // siftDown(i);
+    // }
+    // }
 
     private void siftDown(int padreActual) {
         int longitud = this.size;
