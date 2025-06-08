@@ -12,16 +12,16 @@ public class HeapTransacciones {
         this.heap = new int[longitud];
         this.size = longitud;
 
-        int ultimoPadre = (longitud - 2) / 2;
-
         for (int i = 0; i < longitud; i++) {
             nodos[i] = arr[i];
             heap[i] = i;
             arr[i].heapIndex = i;
         }
 
+        int ultimoPadre = (longitud - 2) / 2;
+
         for (int i = ultimoPadre; i >= 0; i--) {
-            siftDown(i);
+            siftDown(nodos, longitud, i);
         }
     }
 
@@ -60,26 +60,23 @@ public class HeapTransacciones {
     // }
     // }
 
-    private void siftDown(int padreActual) {
-        while (true) {
-            int masGrande = padreActual;
-            int hijoIzq = 2 * padreActual + 1;
-            int hijoDer = 2 * padreActual + 2;
+    private void siftDown(Transaccion[] array, int longitud, int i) {
+            int masGrande = i;
+            int hijoIzq = 2 * i + 1;
+            int hijoDer = 2 * i + 2;
 
-            if (hijoIzq < size && nodos[heap[hijoIzq]].compareTo(nodos[heap[masGrande]]) > 0) {
+            if (hijoIzq < size && array[heap[hijoIzq]].compareTo(array[heap[masGrande]]) > 0) {
                 masGrande = hijoIzq;
             }
 
-            if (hijoDer < size && nodos[heap[hijoDer]].compareTo(nodos[heap[masGrande]]) > 0) {
+            if (hijoDer < size && array[heap[hijoDer]].compareTo(array[heap[masGrande]]) > 0) {
                 masGrande = hijoDer;
             }
 
-            if (masGrande == padreActual)
-                break;
-
-            swap(padreActual, masGrande);
-            padreActual = masGrande;
-        }
+            if (masGrande != i){
+                swap(i, masGrande, array);
+                siftDown(array, longitud, masGrande);
+            }
     }
 
     // capaz termina no siendo necesario
@@ -93,15 +90,15 @@ public class HeapTransacciones {
     // }
     // }
 
-    private void swap(int i, int j) {
+    private void swap(int i, int j, Transaccion[] array) {
         int idI = heap[i];
         int idJ = heap[j];
 
         heap[i] = idJ;
         heap[j] = idI;
 
-        nodos[idI].heapIndex = j;
-        nodos[idJ].heapIndex = i;
+        array[idI].heapIndex = j;
+        array[idJ].heapIndex = i;
     }
 
     public Transaccion[] toArray() {
@@ -133,7 +130,7 @@ public class HeapTransacciones {
         nodos[root.id()] = null;
         this.size--;
 
-        siftDown(0);
+        siftDown(nodos, size, 0);
     }
 
     class Handle {
