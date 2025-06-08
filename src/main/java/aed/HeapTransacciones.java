@@ -95,19 +95,20 @@ public class HeapTransacciones {
         }
     }
 
-    private void siftUp(int nodoActual) {
-        while (nodoActual > 0) {
-            int padre = (nodoActual - 1) / 2;
-
-            if (nodos[heap[nodoActual]].monto < nodos[heap[padre]].monto
-                    || (nodos[heap[nodoActual]].monto == nodos[heap[padre]].monto
-                            && nodos[heap[nodoActual]].id < nodos[heap[padre]].id))
-                break;
-
-            swap(nodoActual, padre);
-            nodoActual = padre;
-        }
-    }
+    // capaz termina no siendo necesario
+    // private void siftUp(int nodoActual) {
+    // while (nodoActual > 0) {
+    // int padre = (nodoActual - 1) / 2;
+    //
+    // if (nodos[heap[nodoActual]].monto < nodos[heap[padre]].monto
+    // || (nodos[heap[nodoActual]].monto == nodos[heap[padre]].monto
+    // && nodos[heap[nodoActual]].id < nodos[heap[padre]].id))
+    // break;
+    //
+    // swap(nodoActual, padre);
+    // nodoActual = padre;
+    // }
+    // }
 
     private void swap(int i, int j) {
         int idI = heap[i];
