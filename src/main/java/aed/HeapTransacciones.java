@@ -61,51 +61,35 @@ public class HeapTransacciones {
     // }
 
     private void siftDown(int padreActual) {
-        int longitud = this.size;
-
         while (true) {
-            int nuevoPadre = padreActual;
+            int masGrande = padreActual;
             int hijoIzq = 2 * padreActual + 1;
             int hijoDer = 2 * padreActual + 2;
 
-            if (hijoIzq < longitud) {
-                Transaccion nodoIzq = nodos[heap[hijoIzq]];
-                Transaccion nodoNuevoPadre = nodos[heap[nuevoPadre]];
-
-                if (nodoIzq.monto() > nodoNuevoPadre.monto()
-                        || (nodoIzq.monto() == nodoNuevoPadre.monto() && nodoIzq.id() > nodoNuevoPadre.id()))
-                    nuevoPadre = hijoIzq;
+            if (hijoIzq < size && nodos[heap[hijoIzq]].compareTo(nodos[heap[masGrande]]) > 0) {
+                masGrande = hijoIzq;
             }
 
-            if (hijoDer < longitud) {
-                Transaccion nodoDer = nodos[heap[hijoDer]];
-                Transaccion nodoNuevoPadre = nodos[heap[nuevoPadre]];
-
-                if (nodoDer.monto() > nodoNuevoPadre.monto()
-                        || (nodoDer.monto() == nodoNuevoPadre.monto() && nodoDer.id() > nodoNuevoPadre.id()))
-                    nuevoPadre = hijoDer;
+            if (hijoDer < size && nodos[heap[hijoDer]].compareTo(nodos[heap[masGrande]]) > 0) {
+                masGrande = hijoDer;
             }
 
-            if (nuevoPadre == padreActual)
+            if (masGrande == padreActual)
                 break;
 
-            swap(padreActual, nuevoPadre);
-            padreActual = nuevoPadre;
+            swap(padreActual, masGrande);
+            padreActual = masGrande;
         }
     }
 
     // capaz termina no siendo necesario
-    // private void siftUp(int nodoActual) {
-    // while (nodoActual > 0) {
-    // int padre = (nodoActual - 1) / 2;
-    //
-    // if (nodos[heap[nodoActual]].monto < nodos[heap[padre]].monto
-    // || (nodos[heap[nodoActual]].monto == nodos[heap[padre]].monto
-    // && nodos[heap[nodoActual]].id < nodos[heap[padre]].id))
+    // private void siftUp(int i) {
+    // while (i > 0) {
+    // int parent = (i - 1) / 2;
+    // if (nodos[heap[i]].compareTo(nodos[heap[parent]]) <= 0)
     // break;
-    //
-    // swap(nodoActual, padre);
-    // nodoActual = padre;
+    // swap(i, parent);
+    // i = parent;
     // }
     // }
 
@@ -150,5 +134,25 @@ public class HeapTransacciones {
         this.size--;
 
         siftDown(0);
+    }
+
+    class Handle {
+        public int id;
+
+        public Handle(int id) {
+            this.id = id;
+        }
+    }
+
+    public Handle raiz() {
+        if (this.size == 0) {
+            return null;
+        }
+
+        return new Handle(nodos[heap[0]].id());
+    }
+
+    public int size() {
+        return this.size;
     }
 }

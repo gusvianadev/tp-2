@@ -16,12 +16,20 @@ public class Transaccion implements Comparable<Transaccion> {
 
     @Override
     public int compareTo(Transaccion otro) {
-        throw new UnsupportedOperationException("Implementar!");
+        if (this.monto != otro.monto)
+            return Integer.compare(this.monto, otro.monto);
+        return Integer.compare(this.id, otro.id);
     }
 
     @Override
     public boolean equals(Object otro) {
-        throw new UnsupportedOperationException("Implementar!");
+        if (this == otro)
+            return true;
+        if (otro == null || getClass() != otro.getClass())
+            return false;
+
+        Transaccion t = (Transaccion) otro;
+        return this.id == t.id;
     }
 
     public int id() {
