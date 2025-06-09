@@ -16,14 +16,16 @@ public class HeapUsuarios {
     }
 
     public HeapUsuarios(int longitud) {
-        this.nodos = new Node[longitud];
+        // + 1 porque las ids empiezan en 1
+        this.nodos = new Node[longitud + 1];
         this.heap = new int[longitud];
 
-        for (int i = 0; i < longitud; i++) {
-            Node nodo = new Node(i, i);
+        for (int i = 1; i <= longitud; i++) {
+            int heapIndex = i - 1; // el heap empieza en 0, por eso i - 1
+            Node nodo = new Node(i, heapIndex);
 
             nodos[i] = nodo;
-            heap[i] = i;
+            heap[heapIndex] = i;
         }
     }
 
@@ -100,15 +102,15 @@ public class HeapUsuarios {
     }
 
     public void incrementarSaldo(int id, int cantidad) {
-        if (id < 0 || id >= nodos.length)
-            throw new IllegalArgumentException("Id inválido");
+        if (id < 1 || id >= nodos.length)
+            throw new IllegalArgumentException("Id (" + id + ") inválido");
 
         actualizarSaldo(nodos[id], cantidad);
     }
 
     public void decrementarSaldo(int id, int cantidad) {
-        if (id < 0 || id >= nodos.length)
-            throw new IllegalArgumentException("Id inválido");
+        if (id < 1 || id >= nodos.length)
+            throw new IllegalArgumentException("Id (" + id + ") inválido");
 
         actualizarSaldo(nodos[id], -cantidad);
     }

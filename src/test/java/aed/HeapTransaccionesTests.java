@@ -17,27 +17,17 @@ public class HeapTransaccionesTests {
     @Test
     public void crearHeap() {
         Transaccion[] transacciones = crearTransacciones();
-        HeapTransacciones heap = new HeapTransacciones(transacciones);
+        HeapUsuarios heapUsuarios = new HeapUsuarios(25);
+        HeapTransacciones heap = new HeapTransacciones(transacciones, heapUsuarios);
 
-        assertEquals(4, heap.raiz().id);
-
-        // Tambien verifico que los heapIndex esten bien
-        int[] heapIndexEsperados = { 1, 4, 2, 3, 0 };
-
-        // Las posiciones heapIndexEsperados tienen el heapIndexEsperado para la id que
-        // corresponde a esa posicion
-        // Ej: el heapIndex esperado para la id 0 es 1, para la id 1 es 4, etc.
-        for (int i = 0; i < transacciones.length; i++) {
-            assertEquals(heapIndexEsperados[i], transacciones[i].heapIndex,
-                    "El heapIndex de la transacción " + i + " no es correcto");
-        }
-
+        assertEquals(4, heap.raiz().id());
     }
 
     @Test
     public void hackearUnaVez() {
         Transaccion[] transacciones = crearTransacciones();
-        HeapTransacciones heap = new HeapTransacciones(transacciones);
+        HeapUsuarios heapUsuarios = new HeapUsuarios(25);
+        HeapTransacciones heap = new HeapTransacciones(transacciones, heapUsuarios);
 
         heap.hackear();
         Transaccion[] actual = heap.toArray();
@@ -56,7 +46,8 @@ public class HeapTransaccionesTests {
     @Test
     public void hackearVariasVeces() {
         Transaccion[] transacciones = crearTransacciones();
-        HeapTransacciones heap = new HeapTransacciones(transacciones);
+        HeapUsuarios heapUsuarios = new HeapUsuarios(25);
+        HeapTransacciones heap = new HeapTransacciones(transacciones, heapUsuarios);
 
         heap.hackear(); // elimina id 4
         heap.hackear(); // elimina id 2
@@ -70,16 +61,5 @@ public class HeapTransaccionesTests {
 
         assertEquals(3, actual.length);
         assertEquals(3, heap.size());
-
-        // Verifico que el heapIndex de las transacciones restantes sea correcto
-        for (Transaccion t : actual) {
-            if (t.id() == 0) {
-                assertEquals(0, t.heapIndex, "El heapIndex de la transacción con id 0 no es correcto");
-            } else if (t.id() == 1) {
-                assertEquals(2, t.heapIndex, "El heapIndex de la transacción con id 1 no es correcto");
-            } else if (t.id() == 3) {
-                assertEquals(1, t.heapIndex, "El heapIndex de la transacción con id 3 no es correcto");
-            }
-        }
     }
 }

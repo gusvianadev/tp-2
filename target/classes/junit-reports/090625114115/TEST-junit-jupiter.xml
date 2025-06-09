@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="JUnit Jupiter" tests="15" skipped="0" failures="1" errors="0" time="0.977" hostname="necropolis" timestamp="2025-06-09T11:41:17">
+<properties>
+<property name="file.encoding" value="UTF-8"/>
+<property name="file.separator" value="/"/>
+<property name="java.class.path" value="/home/necropheus/.local/share/nvim/neotest-java/junit-platform-console-standalone-1.10.1.jar"/>
+<property name="java.class.version" value="65.0"/>
+<property name="java.home" value="/nix/store/sbi30vfjsw6b099fmn43vgq70ddl03cr-openjdk-21.0.5+11/lib/openjdk"/>
+<property name="java.io.tmpdir" value="/tmp"/>
+<property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+<property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+<property name="java.runtime.version" value="21.0.5+1-nixos"/>
+<property name="java.specification.name" value="Java Platform API Specification"/>
+<property name="java.specification.vendor" value="Oracle Corporation"/>
+<property name="java.specification.version" value="21"/>
+<property name="java.vendor" value="N/A"/>
+<property name="java.vendor.url" value="https://openjdk.org/"/>
+<property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+<property name="java.version" value="21.0.5"/>
+<property name="java.version.date" value="2024-10-15"/>
+<property name="java.vm.compressedOopsMode" value="Zero based"/>
+<property name="java.vm.info" value="mixed mode, sharing"/>
+<property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+<property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+<property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+<property name="java.vm.specification.version" value="21"/>
+<property name="java.vm.vendor" value="Oracle Corporation"/>
+<property name="java.vm.version" value="21.0.5+1-nixos"/>
+<property name="jdk.debug" value="release"/>
+<property name="line.separator" value="
+"/>
+<property name="native.encoding" value="UTF-8"/>
+<property name="os.arch" value="amd64"/>
+<property name="os.name" value="Linux"/>
+<property name="os.version" value="6.6.69"/>
+<property name="path.separator" value=":"/>
+<property name="stderr.encoding" value="UTF-8"/>
+<property name="stdout.encoding" value="UTF-8"/>
+<property name="sun.arch.data.model" value="64"/>
+<property name="sun.boot.library.path" value="/nix/store/sbi30vfjsw6b099fmn43vgq70ddl03cr-openjdk-21.0.5+11/lib/openjdk/lib"/>
+<property name="sun.cpu.endian" value="little"/>
+<property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+<property name="sun.java.command" value="/home/necropheus/.local/share/nvim/neotest-java/junit-platform-console-standalone-1.10.1.jar execute @./target/classes/.cp --reports-dir=./target/classes/junit-reports/090625114115 --fail-if-no-tests --disable-banner --details=testfeed --config=junit.platform.output.capture.stdout=true -c=aed.BerretacoinTests"/>
+<property name="sun.java.launcher" value="SUN_STANDARD"/>
+<property name="sun.jnu.encoding" value="UTF-8"/>
+<property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+<property name="user.country" value="US"/>
+<property name="user.dir" value="/home/necropheus/Documents/projects/facu/algoritmos/tp2"/>
+<property name="user.home" value="/home/necropheus"/>
+<property name="user.language" value="en"/>
+<property name="user.name" value="necropheus"/>
+<property name="user.timezone" value="America/Argentina/Buenos_Aires"/>
+</properties>
+<testcase name="hackeoTotalDeBloque()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:hackeoTotalDeBloque()]
+display-name: hackeoTotalDeBloque()
+]]></system-out>
+</testcase>
+<testcase name="agregarVariosBloques()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:agregarVariosBloques()]
+display-name: agregarVariosBloques()
+]]></system-out>
+</testcase>
+<testcase name="empatesEnTransaccionMayorValor()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:empatesEnTransaccionMayorValor()]
+display-name: empatesEnTransaccionMayorValor()
+]]></system-out>
+</testcase>
+<testcase name="testStress()" classname="aed.BerretacoinTests" time="0.933">
+<failure message="expected: &lt;4&gt; but was: &lt;3&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <4> but was: <3>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:531)
+	at aed.BerretacoinTests.testStress(BerretacoinTests.java:426)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+]]></failure>
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:testStress()]
+display-name: testStress()
+]]></system-out>
+</testcase>
+<testcase name="maximoTenedorEsElMinimoCuandoNuevo()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:maximoTenedorEsElMinimoCuandoNuevo()]
+display-name: maximoTenedorEsElMinimoCuandoNuevo()
+]]></system-out>
+</testcase>
+<testcase name="multiplesBloquesPequenos()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:multiplesBloquesPequenos()]
+display-name: multiplesBloquesPequenos()
+]]></system-out>
+</testcase>
+<testcase name="agregarBloque()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:agregarBloque()]
+display-name: agregarBloque()
+]]></system-out>
+</testcase>
+<testcase name="hackearConVariosBloques()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:hackearConVariosBloques()]
+display-name: hackearConVariosBloques()
+]]></system-out>
+</testcase>
+<testcase name="unSoloUsuario()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:unSoloUsuario()]
+display-name: unSoloUsuario()
+]]></system-out>
+</testcase>
+<testcase name="bloqueConSoloTransaccionDeCreacion()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:bloqueConSoloTransaccionDeCreacion()]
+display-name: bloqueConSoloTransaccionDeCreacion()
+]]></system-out>
+</testcase>
+<testcase name="hackearVariasVeces()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:hackearVariasVeces()]
+display-name: hackearVariasVeces()
+]]></system-out>
+</testcase>
+<testcase name="hackeoAfectaSaldos()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:hackeoAfectaSaldos()]
+display-name: hackeoAfectaSaldos()
+]]></system-out>
+</testcase>
+<testcase name="hackearConUnBloque()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:hackearConUnBloque()]
+display-name: hackearConUnBloque()
+]]></system-out>
+</testcase>
+<testcase name="empatesEnMaximoTenedor()" classname="aed.BerretacoinTests" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:empatesEnMaximoTenedor()]
+display-name: empatesEnMaximoTenedor()
+]]></system-out>
+</testcase>
+<testcase name="hackeoUnicaTransaccion()" classname="aed.BerretacoinTests" time="0.011">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:aed.BerretacoinTests]/[method:hackeoUnicaTransaccion()]
+display-name: hackeoUnicaTransaccion()
+]]></system-out>
+</testcase>
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]
+display-name: JUnit Jupiter
+]]></system-out>
+</testsuite>

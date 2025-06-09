@@ -1,23 +1,67 @@
 package aed;
 
 public class HeapTransacciones {
-    private Transaccion[] nodos;
+    private Nodo[] nodos;
     private int[] heap;
     private int size = 0;
+    private int sumaMontos = 0;
+    private boolean transaccionDeCreacionEliminada = false;
 
-    public HeapTransacciones(Transaccion[] arr) {
+    class Nodo {
+        int id;
+        int id_comprador;
+        int id_vendedor;
+        int monto;
+        int heapIndex;
+
+        Nodo(int id, int id_comprador, int id_vendedor, int monto, int heapIndex) {
+            this.id = id;
+            this.id_comprador = id_comprador;
+            this.id_vendedor = id_vendedor;
+            this.monto = monto;
+            this.heapIndex = heapIndex;
+        }
+
+        public int compareTo(Nodo otro) {
+            if (this.monto != otro.monto)
+                return Integer.compare(this.monto, otro.monto);
+            return Integer.compare(this.id, otro.id);
+        }
+
+        public boolean equals(Object otro) {
+            if (this == otro)
+                return true;
+            if (otro == null || getClass() != otro.getClass())
+                return false;
+
+            Nodo t = (Nodo) otro;
+            return this.id == t.id;
+        }
+    }
+
+    public HeapTransacciones(Transaccion[] arr, HeapUsuarios heapUsuarios) {
         int longitud = arr.length;
 
-        this.nodos = new Transaccion[longitud];
+        this.nodos = new Nodo[longitud];
         this.heap = new int[longitud];
         this.size = longitud;
 
         int ultimoPadre = (longitud - 2) / 2;
 
         for (int i = 0; i < longitud; i++) {
-            nodos[i] = arr[i];
+            Transaccion tr = arr[i];
+
+            nodos[i] = new Nodo(tr.id(), tr.id_comprador(), tr.id_vendedor(), tr.monto(), i);
             heap[i] = i;
-            arr[i].heapIndex = i;
+
+            if (i > 0) {
+                heapUsuarios.decrementarSaldo(tr.id_comprador(), tr.monto());
+            }
+
+            heapUsuarios.incrementarSaldo(tr.id_vendedor(), tr.monto());
+
+            if (i > 0)
+                sumaMontos += tr.monto();
         }
 
         for (int i = ultimoPadre; i >= 0; i--) {
@@ -108,48 +152,63 @@ public class HeapTransacciones {
         Transaccion[] transacciones = new Transaccion[this.size];
         int i = 0;
 
-        for (Transaccion tr : this.nodos) {
-            if (tr == null) {
+        for (Nodo nodo : this.nodos) {
+            if (nodo == null) {
                 continue;
             }
 
-            transacciones[i] = tr;
+            transacciones[i] = new Transaccion(nodo.id, nodo.id_comprador, nodo.id_vendedor, nodo.monto);
             i++;
         }
 
         return transacciones;
     }
 
-    public void hackear() {
-        if (this.size == 0) {
-            return;
-        }
-
-        Transaccion root = nodos[heap[0]];
-        int lastIndex = this.size - 1;
-
-        heap[0] = heap[lastIndex];
-        nodos[heap[0]].heapIndex = 0;
-        nodos[root.id()] = null;
-        this.size--;
-
-        siftDown(0);
-    }
-
-    class Handle {
-        public int id;
-
-        public Handle(int id) {
-            this.id = id;
-        }
-    }
-
-    public Handle raiz() {
+    public Hackeo hackear() {
         if (this.size == 0) {
             return null;
         }
 
-        return new Handle(nodos[heap[0]].id());
+        Nodo root = nodos[heap[0]];
+        int lastIndex = this.size - 1;
+
+        heap[0] = heap[lastIndex];
+        nodos[heap[0]].heapIndex = 0;
+        nodos[root.id] = null;
+
+        this.size--;
+
+        if (root.id_comprador > 0)
+            sumaMontos -= root.monto;
+        else
+            transaccionDeCreacionEliminada = true;
+
+        siftDown(0);
+
+        return new Hackeo(root.id_comprador, root.id_vendedor, root.monto);
+    }
+
+    public Transaccion raiz() {
+        if (this.size == 0) {
+            return null;
+        }
+
+        Nodo root = nodos[heap[0]];
+        return new Transaccion(root.id, root.id_comprador, root.id_vendedor, root.monto);
+    }
+
+    public int montoMedio() {
+        if (this.size == 0) {
+            return 0;
+        }
+
+        int divisor = transaccionDeCreacionEliminada ? this.size : this.size - 1;
+
+        if (divisor == 0) {
+            return 0;
+        }
+
+        return sumaMontos / divisor;
     }
 
     public int size() {

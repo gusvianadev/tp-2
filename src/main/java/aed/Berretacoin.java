@@ -1,33 +1,56 @@
 package aed;
 
+import java.util.ArrayList;
+
 public class Berretacoin {
     HeapUsuarios heapUsuarios;
+    ArrayList<Bloque> bloques;
+
+    class Bloque {
+        int id;
+        HeapTransacciones transacciones;
+
+        Bloque(Transaccion[] transacciones) {
+            this.id = bloques.size();
+            this.transacciones = new HeapTransacciones(transacciones, heapUsuarios);
+        }
+    }
 
     public Berretacoin(int n_usuarios) {
         this.heapUsuarios = new HeapUsuarios(n_usuarios);
+        this.bloques = new ArrayList<>();
     }
 
     public void agregarBloque(Transaccion[] transacciones) {
-        throw new UnsupportedOperationException("Implementar!");
+        this.bloques.add(new Bloque(transacciones));
     }
 
     public Transaccion txMayorValorUltimoBloque() {
-        throw new UnsupportedOperationException("Implementar!");
+        return this.bloques.get(bloques.size() - 1).transacciones.raiz();
     }
 
     public Transaccion[] txUltimoBloque() {
-        throw new UnsupportedOperationException("Implementar!");
+        return this.bloques.get(bloques.size() - 1).transacciones.toArray();
     }
 
     public int maximoTenedor() {
-        throw new UnsupportedOperationException("Implementar!");
+        return this.heapUsuarios.maximoTenedor();
     }
 
     public int montoMedioUltimoBloque() {
-        throw new UnsupportedOperationException("Implementar!");
+        return this.bloques.get(bloques.size() - 1).transacciones.montoMedio();
     }
 
     public void hackearTx() {
-        throw new UnsupportedOperationException("Implementar!");
+        Hackeo hackeo = this.bloques.get(bloques.size() - 1).transacciones.hackear();
+
+        if (hackeo == null) {
+            return;
+        }
+
+        if (hackeo.id_comprador > 0)
+            this.heapUsuarios.incrementarSaldo(hackeo.id_comprador, hackeo.monto);
+
+        this.heapUsuarios.decrementarSaldo(hackeo.id_vendedor, hackeo.monto);
     }
 }

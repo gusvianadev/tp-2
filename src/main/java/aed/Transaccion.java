@@ -5,7 +5,6 @@ public class Transaccion implements Comparable<Transaccion> {
     private int id_comprador;
     private int id_vendedor;
     private int monto;
-    public int heapIndex;
 
     public Transaccion(int id, int id_comprador, int id_vendedor, int monto) {
         this.id = id;
@@ -18,7 +17,7 @@ public class Transaccion implements Comparable<Transaccion> {
     public int compareTo(Transaccion otro) {
         if (this.monto != otro.monto)
             return Integer.compare(this.monto, otro.monto);
-        return Integer.compare(this.id, otro.id);
+        return Integer.compare(otro.id, this.id);
     }
 
     @Override
