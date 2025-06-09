@@ -28,7 +28,10 @@ public class Transaccion implements Comparable<Transaccion> {
             return false;
 
         Transaccion t = (Transaccion) otro;
-        return this.id == t.id;
+        return this.id == t.id &&
+                this.id_comprador == t.id_comprador &&
+                this.id_vendedor == t.id_vendedor &&
+                this.monto == t.monto;
     }
 
     public int id() {
