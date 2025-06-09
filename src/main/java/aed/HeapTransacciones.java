@@ -49,8 +49,6 @@ public class HeapTransacciones {
         this.heap = new int[longitud];
         this.size = longitud;
 
-        int ultimoPadre = (longitud - 2) / 2;
-
         for (int i = 0; i < longitud; i++) {
             Transaccion tr = arr[i];
 
@@ -67,8 +65,10 @@ public class HeapTransacciones {
                 sumaMontos += tr.monto();
         }
 
+        int ultimoPadre = (longitud - 2) / 2;
+
         for (int i = ultimoPadre; i >= 0; i--) {
-            siftDown(i);
+            siftDown(nodos, longitud, i);
         }
     }
 
@@ -107,25 +107,22 @@ public class HeapTransacciones {
     // }
     // }
 
-    private void siftDown(int padreActual) {
-        while (true) {
-            int masGrande = padreActual;
-            int hijoIzq = 2 * padreActual + 1;
-            int hijoDer = 2 * padreActual + 2;
+    private void siftDown(Nodo[] array, int longitud, int i) {
+        int masGrande = i;
+        int hijoIzq = 2 * i + 1;
+        int hijoDer = 2 * i + 2;
 
-            if (hijoIzq < size && nodos[heap[hijoIzq]].compareTo(nodos[heap[masGrande]]) > 0) {
-                masGrande = hijoIzq;
-            }
+        if (hijoIzq < size && array[heap[hijoIzq]].compareTo(array[heap[masGrande]]) > 0) {
+            masGrande = hijoIzq;
+        }
 
-            if (hijoDer < size && nodos[heap[hijoDer]].compareTo(nodos[heap[masGrande]]) > 0) {
-                masGrande = hijoDer;
-            }
+        if (hijoDer < size && array[heap[hijoDer]].compareTo(array[heap[masGrande]]) > 0) {
+            masGrande = hijoDer;
+        }
 
-            if (masGrande == padreActual)
-                break;
-
-            swap(padreActual, masGrande);
-            padreActual = masGrande;
+        if (masGrande != i) {
+            swap(i, masGrande, array);
+            siftDown(array, longitud, masGrande);
         }
     }
 
@@ -140,15 +137,15 @@ public class HeapTransacciones {
     // }
     // }
 
-    private void swap(int i, int j) {
+    private void swap(int i, int j, Nodo[] array) {
         int idI = heap[i];
         int idJ = heap[j];
 
         heap[i] = idJ;
         heap[j] = idI;
 
-        nodos[idI].heapIndex = j;
-        nodos[idJ].heapIndex = i;
+        array[idI].heapIndex = j;
+        array[idJ].heapIndex = i;
     }
 
     public Transaccion[] toArray() {
@@ -186,7 +183,7 @@ public class HeapTransacciones {
         else
             transaccionDeCreacionEliminada = true;
 
-        siftDown(0);
+        siftDown(nodos, size, 0);
 
         return new Hackeo(root.id_comprador, root.id_vendedor, root.monto);
     }
