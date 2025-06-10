@@ -1,6 +1,7 @@
 package aed;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
 public class HeapTransaccionesTests {
@@ -57,7 +58,7 @@ public class HeapTransaccionesTests {
     }
 
     @Test
-    public void hackearUnaVezConCracion() {
+    public void hackearUnaVezConCreacion() {
         Transaccion[] transacciones = crearTransaccionesConCreacion();
         HeapUsuarios heapUsuarios = new HeapUsuarios(25);
         HeapTransacciones heap = new HeapTransacciones(transacciones, heapUsuarios);
@@ -88,7 +89,6 @@ public class HeapTransaccionesTests {
         heap.hackear(); // elimina id 4
         assertEquals(4, heap.size());
         heap.hackear(); // elimina id 2
-        assertEquals(3, heap.size());
 
         Transaccion[] actual = heap.toArray();
 
@@ -99,5 +99,20 @@ public class HeapTransaccionesTests {
 
         assertEquals(3, actual.length);
         assertEquals(3, heap.size());
+    }
+
+    @Test
+    public void hackearVariasVecesConCreacion() {
+        Transaccion[] transacciones = crearTransaccionesConCreacion();
+        HeapUsuarios heapUsuarios = new HeapUsuarios(25);
+        HeapTransacciones heap = new HeapTransacciones(transacciones, heapUsuarios);
+        assertEquals(5, heap.size());
+        assertEquals(57, heap.montoMedio());
+        heap.hackear(); // elimina id 4
+        assertEquals(4, heap.size());
+        assertEquals(46, heap.montoMedio());
+        heap.hackear(); // elimina id 2
+        assertEquals(3, heap.size());
+        assertEquals(35, heap.montoMedio());
     }
 }
