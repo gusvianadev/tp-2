@@ -5,7 +5,7 @@ public class HeapTransacciones {
     private int[] heap;
     private int size = 0;
     private int sumaMontos = 0;
-    private boolean transaccionDeCreacionEliminada = false;
+    private int cantidadTr = 0;
 
     class Nodo {
         int id;
@@ -44,7 +44,8 @@ public class HeapTransacciones {
 
     public HeapTransacciones(Transaccion[] arr, HeapUsuarios heapUsuarios) {
         int longitud = arr.length;
-
+        this.cantidadTr = 0;
+        this.sumaMontos = 0;
         this.nodos = new Nodo[longitud];
         this.heap = new int[longitud];
         this.size = longitud;
@@ -55,14 +56,16 @@ public class HeapTransacciones {
             nodos[i] = new Nodo(tr.id(), tr.id_comprador(), tr.id_vendedor(), tr.monto(), i);
             heap[i] = i;
 
-            if (i > 0) {
+            if (tr.esCreacion()) {
+                heapUsuarios.incrementarSaldo(tr.id_vendedor(), tr.monto());
+            } else {
                 heapUsuarios.decrementarSaldo(tr.id_comprador(), tr.monto());
+                heapUsuarios.incrementarSaldo(tr.id_vendedor(), tr.monto());
+
+                sumaMontos += tr.monto();
+                cantidadTr++;
             }
 
-            heapUsuarios.incrementarSaldo(tr.id_vendedor(), tr.monto());
-
-            if (i > 0)
-                sumaMontos += tr.monto();
         }
 
         int ultimoPadre = (longitud - 2) / 2;
@@ -178,10 +181,10 @@ public class HeapTransacciones {
 
         this.size--;
 
-        if (root.id_comprador > 0)
+        if (root.id_comprador > 0) {
             sumaMontos -= root.monto;
-        else
-            transaccionDeCreacionEliminada = true;
+            cantidadTr--;
+        }
 
         siftDown(nodos, size, 0);
 
@@ -202,7 +205,7 @@ public class HeapTransacciones {
             return 0;
         }
 
-        int divisor = transaccionDeCreacionEliminada ? this.size : this.size - 1;
+        int divisor = cantidadTr;
 
         if (divisor == 0) {
             return 0;
