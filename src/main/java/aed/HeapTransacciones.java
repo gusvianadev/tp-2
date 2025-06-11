@@ -58,15 +58,14 @@ public class HeapTransacciones {
 
             if (tr.esCreacion()) {
                 heapUsuarios.incrementarSaldo(tr.id_vendedor(), tr.monto());
-            }else{
+            } else {
                 heapUsuarios.decrementarSaldo(tr.id_comprador(), tr.monto());
                 heapUsuarios.incrementarSaldo(tr.id_vendedor(), tr.monto());
-            }
-            
-            if (!tr.esCreacion()){
+
                 sumaMontos += tr.monto();
                 cantidadTr++;
             }
+
         }
 
         int ultimoPadre = (longitud - 2) / 2;
@@ -182,7 +181,7 @@ public class HeapTransacciones {
 
         this.size--;
 
-        if (root.id_comprador > 0){
+        if (root.id_comprador > 0) {
             sumaMontos -= root.monto;
             cantidadTr--;
         }
