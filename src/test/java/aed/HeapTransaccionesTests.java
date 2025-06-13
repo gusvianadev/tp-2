@@ -39,11 +39,15 @@ public class HeapTransaccionesTests {
         Transaccion[] transacciones = crearTransacciones();
         HeapUsuarios heapUsuarios = new HeapUsuarios(25);
         HeapTransacciones heap = new HeapTransacciones(transacciones, heapUsuarios);
+
         assertEquals(5, heap.size());
         assertEquals(56, heap.montoMedio());
+
         heap.hackear();
+        
         assertEquals(4, heap.size());
         assertEquals(47, heap.montoMedio());
+
         Transaccion[] actual = heap.toArray();
 
         boolean contieneId4 = false;
@@ -89,9 +93,13 @@ public class HeapTransaccionesTests {
         Transaccion[] transacciones = crearTransacciones();
         HeapUsuarios heapUsuarios = new HeapUsuarios(25);
         HeapTransacciones heap = new HeapTransacciones(transacciones, heapUsuarios);
+
         assertEquals(5, heap.size());
+
         heap.hackear(); // elimina id 4
+
         assertEquals(4, heap.size());
+
         heap.hackear(); // elimina id 2
 
         Transaccion[] actual = heap.toArray();

@@ -9,10 +9,6 @@ public class HeapUsuariosTests {
     void crear() {
         HeapUsuarios heap = new HeapUsuarios(5);
 
-        for (int i = 1; i <= 5; i++) {
-            heap.incrementarSaldo(i, 0);
-        }
-
         assertEquals(1, heap.maximoTenedor());
     }
 
