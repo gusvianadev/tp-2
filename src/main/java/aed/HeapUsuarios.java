@@ -66,10 +66,13 @@ public class HeapUsuarios {
     private void siftUp(int nodoActual) {
         while (nodoActual > 0) {
             int padre = (nodoActual - 1) / 2;
+            Node nodo = nodos[heap[nodoActual]];
+            Node nodoPadre = nodos[heap[padre]];
 
-            if (nodos[heap[nodoActual]].saldo < nodos[heap[padre]].saldo
-                    || (nodos[heap[nodoActual]].saldo == nodos[heap[padre]].saldo
-                            && nodos[heap[nodoActual]].id > nodos[heap[padre]].id))
+            boolean esMenor = nodo.saldo < nodoPadre.saldo;
+            boolean tieneMayorId = (nodo.saldo == nodoPadre.saldo && nodo.id > nodoPadre.id);
+
+            if (esMenor || tieneMayorId)
                 break;
 
             swap(nodoActual, padre);

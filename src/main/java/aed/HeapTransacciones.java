@@ -7,7 +7,7 @@ public class HeapTransacciones {
     private int sumaMontos = 0;
     private int cantidadTr = 0;
 
-    class Nodo extends Transaccion{
+    class Nodo extends Transaccion {
         Nodo(int id, int id_comprador, int id_vendedor, int monto) {
             super(id, id_comprador, id_vendedor, monto);
         }
@@ -19,7 +19,7 @@ public class HeapTransacciones {
         this.nodos = new Nodo[longitud];
         this.heap = new int[longitud];
         this.size = longitud;
-        
+
         // O(n*log(P))
         for (int i = 0; i < longitud; i++) {
             Transaccion tr = arr[i];
@@ -82,7 +82,7 @@ public class HeapTransacciones {
             if (nodo != null) {
                 transacciones[i] = new Transaccion(nodo.id(), nodo.id_comprador(), nodo.id_vendedor(), nodo.monto());
                 i++;
-            }            
+            }
         }
 
         return transacciones;

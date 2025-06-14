@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class HeapUsuariosTests {
-
     @Test
     void crear() {
         HeapUsuarios heap = new HeapUsuarios(5);

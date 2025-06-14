@@ -44,7 +44,7 @@ public class HeapTransaccionesTests {
         assertEquals(56, heap.montoMedio());
 
         heap.hackear();
-        
+
         assertEquals(4, heap.size());
         assertEquals(47, heap.montoMedio());
 
