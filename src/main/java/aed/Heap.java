@@ -1,59 +1,63 @@
 package aed;
 
-public class Heap<T extends Transaccion> {
-    private T[] nodos;
+public class Heap<T implements NodoHeap> {
+    private ListaEnlazadaAcotada<T> nodos;
     private int[] heap;
     private int longitud;
 
-    public Heap(T[] array){
-        this.longitud = array.length;
-        this.nodos = array;        
-        this.heap = new int[this.longitud];
-        for(int i = 0; i < this.longitud; i ++){
-            this.heap[i] = this.nodos[i].id();
+    public Heap(T[] array) {
+        int longitud = array.length;
+        this.nodos = ListaEnlazadaAcotada<T>(longitud);
+        this.heap = new int[longitud];
+        this.longitud = longitud;
+
+        for(int i = 0; i < this.longitud; i++) {
+            this.heap[i] = i;
+            this.nodos.agregarAtras(array[i]);
         }
-        this.heap = this.heapify();
+
+        int ultimoPadre = (longitud - 2) / 2;
+        for (int i = ultimoPadre; i >= 0; i--) siftDown(i);
     }
 
     public T obtenerRaiz(){
-        if (this.longitud == 0) {
-            return null;
-        }
-
-        T raiz = nodos[heap[0]];
-        return raiz;
+        return nodos.obtener(heap[0]);
     }
 
-    private int[] heapify(){
-        int ultimoPadre = (this.longitud - 2) / 2;
-        // O(n)
-        for (int i = ultimoPadre; i >= 0; i--) {
-            this.siftDown(this.nodos, this.longitud, i);
-        }
-
-        return this.heap;
-    }
-
-    private void siftDown(T[] array, int longitud, int i) {
+    private void siftDown(int i) {
         int masGrande = i;
         int hijoIzq = 2 * i + 1;
         int hijoDer = 2 * i + 2;
 
-        if (hijoIzq < longitud && array[heap[hijoIzq]].compareTo(array[heap[masGrande]]) > 0) {
+        if (hijoIzq < this.longitud && elems.obtener(heap[hijoIzq]).compareTo(elems.obtener(heap[masGrande])) > 0) {
             masGrande = hijoIzq;
         }
 
-        if (hijoDer < longitud && array[heap[hijoDer]].compareTo(array[heap[masGrande]]) > 0) {
+        if (hijoDer < this.longitud && elems.obtener(heap[hijoDer]).compareTo(elems.obtener(heap[masGrande])) > 0) {
             masGrande = hijoDer;
         }
 
-        if (masGrande != i) {
-            this.swap(i, masGrande, array);
-            siftDown(array, longitud, masGrande);
+        if (masGrande == i) return;
+
+        this.swap(i, masGrande);
+        siftDown(masGrande);
+    }
+
+    private void siftUp(int nodoActual) {
+        while (nodoActual > 0) {
+            int padre = (nodoActual - 1) / 2;
+            T nodo = nodos.obtener(heap[nodoActual]);
+            T nodoPadre = nodos.obtener(heap[padre]);
+
+            if (nodoPadre.compareTo(nodo) > 0)
+                break;
+
+            swap(nodoActual, padre);
+            nodoActual = padre;
         }
     }
 
-    private void swap(int i, int j, T[] array) {
+    private void swap(int i, int j) {
         int idI = heap[i];
         int idJ = heap[j];
 
@@ -61,29 +65,28 @@ public class Heap<T extends Transaccion> {
         heap[j] = idI;
     }
 
-    public void eliminarRaiz(){
-        // O(log n)
-         if (this.longitud == 0) {
-            return;
-        }
+    public T modificar(int id, T nuevo) {
+        return this.elems.modificarPosicion(id, T);
+    }
 
-        T root = nodos[heap[0]];
-        int lastIndex = this.longitud - 1;
+    public T[] toArray() {
+        T[] arr = new T[this.size];
+        ListaIterador iterador = this.elems.iterador();
 
-        heap[0] = heap[lastIndex];
-        nodos[root.id()] = null;
+        while (iterador.haySiguiente()) 
+            transacciones[i] = iterador.siguiente();
 
-        this.longitud--;
+        return arr;
+    }
+
+    public void eliminarRaiz() {
+        elems.eliminar(heap[0]); 
+        heap[0] = heap[heap.length - 1];
 
         siftDown(nodos, longitud, 0);
     }
 
-    public int longitud(){
+    public int longitud() {
         return this.longitud;
-    }
-
-    public T[] toArray(){
-        // ?????        
-        return this.nodos;
     }
 }

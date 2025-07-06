@@ -12,6 +12,12 @@ public class Berretacoin {
 
         Bloque(Transaccion[] transacciones) {
             this.id = bloques.size();
+            NodoHeap transaccionesAHeap = new NodoHeap[transacciones.length];
+
+            for (int i; i < transacciones; i++) {
+                transaccionesAHeap[i] = TransaccionHeap(transacciones[i]);
+            }
+
             this.transacciones = new HeapTransacciones(transacciones, heapUsuarios);
         }
     }
