@@ -1,6 +1,6 @@
 package aed;
 
-public class Heap<T implements NodoHeap> {
+public class Heap<T extends Comparable<T>> {
     private ListaEnlazadaAcotada<T> nodos;
     private int[] heap;
     private int longitud;
@@ -11,7 +11,7 @@ public class Heap<T implements NodoHeap> {
         this.heap = new int[longitud];
         this.longitud = longitud;
 
-        for(int i = 0; i < this.longitud; i++) {
+        for (int i = 0; i < this.longitud; i++) {
             this.heap[i] = i;
             this.nodos.agregarAtras(array[i]);
         }

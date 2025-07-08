@@ -3,23 +3,22 @@ package aed;
 import java.util.ArrayList;
 
 public class Berretacoin {
-    HeapUsuarios heapUsuarios;
+    Heap<Usuario> heapUsuarios;
     ArrayList<Bloque> bloques;
 
-    class Bloque {
-        int id;
-        HeapTransacciones transacciones;
+    public class Bloque {
+            int id;
+            Heap<Transaccion> transacciones;
 
-        Bloque(Transaccion[] transacciones) {
-            this.id = bloques.size();
-            NodoHeap transaccionesAHeap = new NodoHeap[transacciones.length];
+            Bloque(Transaccion[] transacciones) {
+                this.id = bloques.size();
 
-            for (int i; i < transacciones; i++) {
-                transaccionesAHeap[i] = TransaccionHeap(transacciones[i]);
+                // HAY QUE ARREGLAR ESTO
+                for (int i; i < transacciones; i++)
+                    transaccionesAHeap[i] = TransaccionHeap(transacciones[i]);
+
+                this.transacciones = new Heap<Transaccion>(transacciones);
             }
-
-            this.transacciones = new HeapTransacciones(transacciones, heapUsuarios);
-        }
     }
 
     public Berretacoin(int n_usuarios) {
