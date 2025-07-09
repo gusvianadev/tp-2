@@ -1,92 +1,121 @@
 package aed;
 
 public class Heap<T extends Comparable<T>> {
-    private ListaEnlazadaAcotada<T> nodos;
-    private int[] heap;
-    private int longitud;
+	private ListaEnlazadaAcotada<NodoHeap> nodos;
+	private int[] heap;
+	private int longitud;
 
-    public Heap(T[] array) {
-        int longitud = array.length;
-        this.nodos = ListaEnlazadaAcotada<T>(longitud);
-        this.heap = new int[longitud];
-        this.longitud = longitud;
+	private class NodoHeap {
+		T dato;
+		int heapIndex;
 
-        for (int i = 0; i < this.longitud; i++) {
-            this.heap[i] = i;
-            this.nodos.agregarAtras(array[i]);
-        }
+		NodoHeap(T dato, int heapIndex) {
+			this.dato = dato;
+			this.heapIndex = heapIndex; // Inicialmente no está en el heap
+		}
+	}
 
-        int ultimoPadre = (longitud - 2) / 2;
-        for (int i = ultimoPadre; i >= 0; i--) siftDown(i);
-    }
+	public Heap(T[] array) {
+		int longitud = array.length;
+		this.nodos = new ListaEnlazadaAcotada<NodoHeap>(longitud);
+		this.heap = new int[longitud];
+		this.longitud = longitud;
 
-    public T obtenerRaiz(){
-        return nodos.obtener(heap[0]);
-    }
+		for (int i = 0; i < this.longitud; i++) {
+			NodoHeap nodo = new NodoHeap(array[i], i);
+			this.nodos.agregarAtras(nodo);
+			this.heap[i] = i;
+		}
 
-    private void siftDown(int i) {
-        int masGrande = i;
-        int hijoIzq = 2 * i + 1;
-        int hijoDer = 2 * i + 2;
+		int ultimoPadre = (longitud - 2) / 2;
+		for (int i = ultimoPadre; i >= 0; i--)
+			siftDown(i);
+	}
 
-        if (hijoIzq < this.longitud && elems.obtener(heap[hijoIzq]).compareTo(elems.obtener(heap[masGrande])) > 0) {
-            masGrande = hijoIzq;
-        }
+	public T obtenerRaiz() {
+		return nodos.obtener(heap[0]).dato;
+	}
 
-        if (hijoDer < this.longitud && elems.obtener(heap[hijoDer]).compareTo(elems.obtener(heap[masGrande])) > 0) {
-            masGrande = hijoDer;
-        }
+	private void siftDown(int i) {
+		int masGrande = i;
+		int hijoIzq = 2 * i + 1;
+		int hijoDer = 2 * i + 2;
 
-        if (masGrande == i) return;
+		if (hijoIzq < this.longitud
+				&& nodos.obtener(heap[hijoIzq]).dato.compareTo(nodos.obtener(heap[masGrande]).dato) > 0) {
+			masGrande = hijoIzq;
+		}
 
-        this.swap(i, masGrande);
-        siftDown(masGrande);
-    }
+		if (hijoDer < this.longitud
+				&& nodos.obtener(heap[hijoDer]).dato.compareTo(nodos.obtener(heap[masGrande]).dato) > 0) {
+			masGrande = hijoDer;
+		}
 
-    private void siftUp(int nodoActual) {
-        while (nodoActual > 0) {
-            int padre = (nodoActual - 1) / 2;
-            T nodo = nodos.obtener(heap[nodoActual]);
-            T nodoPadre = nodos.obtener(heap[padre]);
+		if (masGrande == i)
+			return;
 
-            if (nodoPadre.compareTo(nodo) > 0)
-                break;
+		this.swap(i, masGrande);
+		siftDown(masGrande);
+	}
 
-            swap(nodoActual, padre);
-            nodoActual = padre;
-        }
-    }
+	private void siftUp(int nodoActual) {
+		while (nodoActual > 0) {
+			int padre = (nodoActual - 1) / 2;
+			T nodo = nodos.obtener(heap[nodoActual]).dato;
+			T nodoPadre = nodos.obtener(heap[padre]).dato;
 
-    private void swap(int i, int j) {
-        int idI = heap[i];
-        int idJ = heap[j];
+			if (nodoPadre.compareTo(nodo) > 0)
+				break;
 
-        heap[i] = idJ;
-        heap[j] = idI;
-    }
+			swap(nodoActual, padre);
+			nodoActual = padre;
+		}
+	}
 
-    public T modificar(int id, T nuevo) {
-        return this.elems.modificarPosicion(id, T);
-    }
+	private void swap(int i, int j) {
+		int idI = heap[i];
+		int idJ = heap[j];
 
-    public T[] toArray() {
-        T[] arr = new T[this.size];
-        ListaIterador iterador = this.elems.iterador();
+		heap[i] = idJ;
+		heap[j] = idI;
 
-        while (iterador.haySiguiente()) 
-            transacciones[i] = iterador.siguiente();
+		nodos.obtener(idI).heapIndex = j;
+		nodos.obtener(idJ).heapIndex = i;
+	}
 
-        return arr;
-    }
+	public void modificar(int id, T nuevo) {
+		NodoHeap nodoViejo = nodos.obtener(id);
+		T viejo = nodoViejo.dato;
+		int comparacion = nuevo.compareTo(viejo);
+		this.nodos.modificarPosicion(id, new NodoHeap(nuevo, nodoViejo.heapIndex));
 
-    public void eliminarRaiz() {
-        elems.eliminar(heap[0]); 
-        heap[0] = heap[heap.length - 1];
+		if (comparacion == 0)
+			return;
 
-        siftDown(nodos, longitud, 0);
-    }
+		if (comparacion < 0)
+			siftDown(nodoViejo.heapIndex);
+		else
+			siftUp(nodoViejo.heapIndex);
+	}
 
-    public int longitud() {
-        return this.longitud;
-    }
+	public T[] toArray() {
+		T[] arr = new T[this.longitud];
+		ListaEnlazadaAcotada<NodoHeap> iterador = this.nodos.iterador();
+
+		while (iterador.haySiguiente())
+			transacciones[i] = iterador.siguiente();
+
+		return arr;
+	}
+
+	public void eliminarRaiz() {
+		elems.eliminar(heap[0]);
+		heap[0] = heap[heap.length - 1];
+
+		siftDown(nodos, longitud, 0);
+	}
+
+	public int longitud() {
+		return this.longitud;
+	}
 }
