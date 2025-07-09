@@ -55,7 +55,7 @@ public class ListaEnlazadaAcotada<T> {
 			ultimo = n;
 
 		primero = n;
-		this.elems.set(longitud, n);
+		this.elems.add(n);
 		longitud++;
 	}
 
@@ -72,7 +72,7 @@ public class ListaEnlazadaAcotada<T> {
 			primero = n;
 
 		ultimo = n;
-		this.elems.set(longitud, n);
+		this.elems.add(n);
 		longitud++;
 	}
 

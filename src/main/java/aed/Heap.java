@@ -108,11 +108,8 @@ public class Heap<T extends Comparable<T>> {
 		ArrayList<T> arr = new ArrayList<T>(this.longitud);
 		Iterador<Heap<T>.NodoHeap> iterador = this.nodos.iterador();
 
-		int i = 0;
-		while (iterador.haySiguiente()) {
-			arr.set(i, iterador.siguiente().dato);
-			i++;
-		}
+		while (iterador.haySiguiente())
+			arr.add(iterador.siguiente().dato);
 
 		return arr;
 	}
