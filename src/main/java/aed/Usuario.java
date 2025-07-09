@@ -1,13 +1,25 @@
 package aed;
 
 public class Usuario implements Comparable<Usuario> {
-	int id;
-	int saldo;
+	private int id;
+	private int saldo;
 
-	public Usuario() {
+	public Usuario(int id, int saldo) {
+		this.id = id;
+		this.saldo = saldo;
+	}
+
+	public int saldo() {
+		return this.saldo;
+	}
+
+	public int id() {
+		return this.id;
 	}
 
 	public int compareTo(Usuario otro) {
-		return 0;
+		if (this.saldo != otro.saldo)
+			return Integer.compare(this.saldo, otro.saldo);
+		return Integer.compare(otro.id, this.id);
 	}
 }

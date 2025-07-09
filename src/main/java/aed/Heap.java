@@ -1,5 +1,7 @@
 package aed;
 
+import java.util.ArrayList;
+
 public class Heap<T extends Comparable<T>> {
 	private ListaEnlazadaAcotada<NodoHeap> nodos;
 	private int[] heap;
@@ -34,6 +36,10 @@ public class Heap<T extends Comparable<T>> {
 
 	public T obtenerRaiz() {
 		return nodos.obtener(heap[0]).dato;
+	}
+
+	public T obtener(int id) {
+		return nodos.obtener(id).dato;
 	}
 
 	private void siftDown(int i) {
@@ -98,21 +104,26 @@ public class Heap<T extends Comparable<T>> {
 			siftUp(nodoViejo.heapIndex);
 	}
 
-	public T[] toArray() {
-		T[] arr = new T[this.longitud];
-		ListaEnlazadaAcotada<NodoHeap> iterador = this.nodos.iterador();
+	public ArrayList<T> toArrayList() {
+		ArrayList<T> arr = new ArrayList<T>(this.longitud);
+		Iterador<Heap<T>.NodoHeap> iterador = this.nodos.iterador();
 
-		while (iterador.haySiguiente())
-			transacciones[i] = iterador.siguiente();
+		int i = 0;
+		while (iterador.haySiguiente()) {
+			arr.set(i, iterador.siguiente().dato);
+			i++;
+		}
 
 		return arr;
 	}
 
 	public void eliminarRaiz() {
-		elems.eliminar(heap[0]);
-		heap[0] = heap[heap.length - 1];
+		this.nodos.eliminar(heap[0]);
+		heap[0] = heap[this.longitud - 1]; // Mueve el último elemento a la raíz
+		this.longitud--;
+		this.heap[this.longitud - 1] = -1; // Marca el último elemento como eliminado
 
-		siftDown(nodos, longitud, 0);
+		siftDown(0);
 	}
 
 	public int longitud() {

@@ -3,7 +3,7 @@ package aed;
 import java.util.*;
 
 public class ListaEnlazadaAcotada<T> {
-	private Nodo[] elems;
+	private ArrayList<Nodo> elems;
 	private Nodo primero;
 	private Nodo ultimo;
 	private int longitud;
@@ -20,14 +20,14 @@ public class ListaEnlazadaAcotada<T> {
 	}
 
 	public ListaEnlazadaAcotada(int cota) {
-		this.elems = new Nodo[cota];
+		this.elems = new ArrayList<Nodo>(cota);
 		this.primero = null;
 		this.ultimo = null;
 		this.longitud = 0;
 		this.cota = cota;
 	}
 
-	public ListaEnlazadaAcotada(ListaEnlazada<T> lista) {
+	public ListaEnlazadaAcotada(ListaEnlazadaAcotada<T> lista) {
 		this.primero = null;
 		this.ultimo = null;
 		this.longitud = 0;
@@ -55,7 +55,7 @@ public class ListaEnlazadaAcotada<T> {
 			ultimo = n;
 
 		primero = n;
-		this.elems[longitud] = n;
+		this.elems.set(longitud, n);
 		longitud++;
 	}
 
@@ -72,7 +72,7 @@ public class ListaEnlazadaAcotada<T> {
 			primero = n;
 
 		ultimo = n;
-		this.elems[longitud] = n;
+		this.elems.set(longitud, n);
 		longitud++;
 	}
 
@@ -80,10 +80,10 @@ public class ListaEnlazadaAcotada<T> {
 		if (i < 0 || i >= longitud)
 			throw new IndexOutOfBoundsException();
 
-		if (elems[i] == null)
+		if (elems.get(i) == null)
 			throw new NoSuchElementException();
 
-		return elems[i];
+		return elems.get(i);
 	}
 
 	public T obtener(int i) {
@@ -103,7 +103,7 @@ public class ListaEnlazadaAcotada<T> {
 		else
 			ultimo = nodo.anterior;
 
-		this.elems[i] = null;
+		this.elems.set(i, null);
 
 		longitud--;
 	}
