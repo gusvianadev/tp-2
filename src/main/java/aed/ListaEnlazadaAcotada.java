@@ -3,180 +3,183 @@ package aed;
 import java.util.*;
 
 public class ListaEnlazadaAcotada<T> {
-	private ArrayList<Nodo> elems;
-	private Nodo primero;
-	private Nodo ultimo;
-	private int longitud;
-	private int cota;
+    private ArrayList<Nodo> elems;
+    private Nodo primero;
+    private Nodo ultimo;
+    private int longitud;
+    private int cota;
 
-	private class Nodo {
-		T dato;
-		Nodo siguiente;
-		Nodo anterior;
+    private class Nodo {
+        T dato;
+        Nodo siguiente;
+        Nodo anterior;
 
-		Nodo(T dato) {
-			this.dato = dato;
-		}
-	}
+        Nodo(T dato) {
+            this.dato = dato;
+        }
+    }
 
-	public ListaEnlazadaAcotada(int cota) {
-		this.elems = new ArrayList<Nodo>(cota);
-		this.primero = null;
-		this.ultimo = null;
-		this.longitud = 0;
-		this.cota = cota;
-	}
+    public ListaEnlazadaAcotada(int cota) {
+        this.elems = new ArrayList<Nodo>(cota);
+        this.primero = null;
+        this.ultimo = null;
+        this.longitud = 0;
+        this.cota = cota;
+    }
 
-	public ListaEnlazadaAcotada(ListaEnlazadaAcotada<T> lista) {
-		this.primero = null;
-		this.ultimo = null;
-		this.longitud = 0;
-		this.cota = lista.cota;
+    public ListaEnlazadaAcotada(ListaEnlazadaAcotada<T> lista) {
+        this.primero = null;
+        this.ultimo = null;
+        this.longitud = 0;
+        this.cota = lista.cota;
 
-		for (Nodo n = lista.primero; n != null; n = n.siguiente) {
-			agregarAtras(n.dato);
-		}
-	}
+        for (Nodo n = lista.primero; n != null; n = n.siguiente) {
+            agregarAtras(n.dato);
+        }
+    }
 
-	public int longitud() {
-		return longitud;
-	}
+    public int longitud() {
+        return longitud;
+    }
 
-	public void agregarAdelante(T elem) {
-		if (this.longitud == this.cota)
-			throw new IndexOutOfBoundsException();
+    public void agregarAdelante(T elem) {
+        if (this.longitud == this.cota)
+            throw new IndexOutOfBoundsException();
 
-		Nodo n = new Nodo(elem);
-		n.siguiente = primero;
+        Nodo n = new Nodo(elem);
+        n.siguiente = primero;
 
-		if (primero != null)
-			primero.anterior = n;
-		else
-			ultimo = n;
+        if (primero != null)
+            primero.anterior = n;
+        else
+            ultimo = n;
 
-		primero = n;
-		this.elems.add(n);
-		longitud++;
-	}
+        primero = n;
+        this.elems.add(n);
+        longitud++;
+    }
 
-	public void agregarAtras(T elem) {
-		if (this.longitud == this.cota)
-			throw new IndexOutOfBoundsException();
+    public void agregarAtras(T elem) {
+        if (this.longitud == this.cota)
+            throw new IndexOutOfBoundsException();
 
-		Nodo n = new Nodo(elem);
-		n.anterior = ultimo;
+        Nodo n = new Nodo(elem);
+        n.anterior = ultimo;
 
-		if (ultimo != null)
-			ultimo.siguiente = n;
-		else
-			primero = n;
+        if (ultimo != null)
+            ultimo.siguiente = n;
+        else
+            primero = n;
 
-		ultimo = n;
-		this.elems.add(n);
-		longitud++;
-	}
+        ultimo = n;
+        this.elems.add(n);
+        longitud++;
+    }
 
-	private Nodo obtenerNodo(int i) {
-		if (i < 0 || i >= longitud)
-			throw new IndexOutOfBoundsException();
+    private Nodo obtenerNodo(int i) {
+        if (i < 0 || i >= longitud)
+            throw new IndexOutOfBoundsException();
 
-		if (elems.get(i) == null)
-			throw new NoSuchElementException();
+        if (elems.get(i) == null)
+            throw new NoSuchElementException();
 
-		return elems.get(i);
-	}
+        return elems.get(i);
+    }
 
-	public T obtener(int i) {
-		return obtenerNodo(i).dato;
-	}
+    public T obtener(int i) {
+        return obtenerNodo(i).dato;
+    }
 
-	public void eliminar(int i) {
-		Nodo nodo = obtenerNodo(i);
+    public T eliminar(int i) {
+        Nodo nodo = obtenerNodo(i);
+        T dato = nodo.dato;
 
-		if (nodo.anterior != null)
-			nodo.anterior.siguiente = nodo.siguiente;
-		else
-			primero = nodo.siguiente;
+        if (nodo.anterior != null)
+            nodo.anterior.siguiente = nodo.siguiente;
+        else
+            primero = nodo.siguiente;
 
-		if (nodo.siguiente != null)
-			nodo.siguiente.anterior = nodo.anterior;
-		else
-			ultimo = nodo.anterior;
+        if (nodo.siguiente != null)
+            nodo.siguiente.anterior = nodo.anterior;
+        else
+            ultimo = nodo.anterior;
 
-		this.elems.set(i, null);
+        this.elems.set(i, null);
 
-		longitud--;
-	}
+        longitud--;
 
-	public void modificarPosicion(int i, T elem) {
-		obtenerNodo(i).dato = elem;
-	}
+        return dato;
+    }
 
-	public int cota() {
-		return this.cota;
-	}
+    public void modificarPosicion(int i, T elem) {
+        obtenerNodo(i).dato = elem;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder("[");
+    public int cota() {
+        return this.cota;
+    }
 
-		for (Nodo n = primero; n != null; n = n.siguiente) {
-			sb.append(n.dato);
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
 
-			if (n.siguiente != null)
-				sb.append(", ");
-		}
-		sb.append("]");
+        for (Nodo n = primero; n != null; n = n.siguiente) {
+            sb.append(n.dato);
 
-		return sb.toString();
-	}
+            if (n.siguiente != null)
+                sb.append(", ");
+        }
+        sb.append("]");
 
-	private class ListaIterador implements Iterador<T> {
-		private Nodo siguienteNodo;
+        return sb.toString();
+    }
 
-		public ListaIterador() {
-			siguienteNodo = primero;
-		}
+    private class ListaIterador implements Iterador<T> {
+        private Nodo siguienteNodo;
 
-		@Override
-		public boolean haySiguiente() {
-			return siguienteNodo != null;
-		}
+        public ListaIterador() {
+            siguienteNodo = primero;
+        }
 
-		@Override
-		public boolean hayAnterior() {
-			return haySiguiente()
-					? siguienteNodo.anterior != null
-					: ultimo != null;
-		}
+        @Override
+        public boolean haySiguiente() {
+            return siguienteNodo != null;
+        }
 
-		@Override
-		public T siguiente() {
-			if (!haySiguiente())
-				throw new NoSuchElementException();
+        @Override
+        public boolean hayAnterior() {
+            return haySiguiente()
+                    ? siguienteNodo.anterior != null
+                    : ultimo != null;
+        }
 
-			T val = siguienteNodo.dato;
-			siguienteNodo = siguienteNodo.siguiente;
+        @Override
+        public T siguiente() {
+            if (!haySiguiente())
+                throw new NoSuchElementException();
 
-			return val;
-		}
+            T val = siguienteNodo.dato;
+            siguienteNodo = siguienteNodo.siguiente;
 
-		@Override
-		public T anterior() {
-			if (!hayAnterior())
-				throw new NoSuchElementException();
+            return val;
+        }
 
-			if (siguienteNodo != null) {
-				siguienteNodo = siguienteNodo.anterior;
-			} else {
-				siguienteNodo = ultimo;
-			}
+        @Override
+        public T anterior() {
+            if (!hayAnterior())
+                throw new NoSuchElementException();
 
-			return siguienteNodo.dato;
-		}
-	}
+            if (siguienteNodo != null) {
+                siguienteNodo = siguienteNodo.anterior;
+            } else {
+                siguienteNodo = ultimo;
+            }
 
-	public Iterador<T> iterador() {
-		return new ListaIterador();
-	}
+            return siguienteNodo.dato;
+        }
+    }
+
+    public Iterador<T> iterador() {
+        return new ListaIterador();
+    }
 }
