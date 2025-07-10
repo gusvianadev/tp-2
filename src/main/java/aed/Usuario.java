@@ -22,4 +22,10 @@ public class Usuario implements Comparable<Usuario> {
 			return Integer.compare(this.saldo, otro.saldo);
 		return Integer.compare(otro.id, this.id);
 	}
+
+	// Esto es para testear
+	@Override
+	public String toString() {
+    	return "Usuario{id=" + id + ", saldo=" + saldo + "}";
+	}
 }

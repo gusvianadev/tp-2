@@ -53,4 +53,10 @@ public class Transaccion implements Comparable<Transaccion> {
 	public boolean esCreacion() {
 		return this.id_comprador == 0;
 	}
+
+	// Esto para testear	
+	@Override
+	public String toString() {
+    	return "Transaccion{id=" + id + ", comprador=" + id_comprador + ", vendedor="+ id_vendedor + ", monto= "+ monto+ "}";
+	}
 }

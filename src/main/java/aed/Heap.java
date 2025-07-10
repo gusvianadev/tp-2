@@ -115,12 +115,22 @@ public class Heap<T extends Comparable<T>> {
 	}
 
 	public void eliminarRaiz() {
-		this.nodos.eliminar(heap[0]);
-		heap[0] = heap[this.longitud - 1]; // Mueve el último elemento a la raíz
-		this.longitud--;
-		this.heap[this.longitud - 1] = -1; // Marca el último elemento como eliminado
+		if(this.longitud == 1){
 
-		siftDown(0);
+			this.nodos.eliminar(heap[0]);
+			this.heap[0] = -1;
+			this.longitud--;
+
+		} else {
+
+			this.nodos.eliminar(heap[0]);
+			heap[0] = heap[this.longitud - 1];
+			nodos.obtener(heap[0]).heapIndex = 0; // Cambia el heapIndex del nodo
+			this.heap[this.longitud - 1] = -1; // Mueve el último elemento a la raíz
+			this.longitud--;
+			siftDown(0);
+		}
+
 	}
 
 	public int longitud() {
