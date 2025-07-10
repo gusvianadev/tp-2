@@ -77,17 +77,15 @@ public class ListaEnlazadaAcotada<T> {
     }
 
     private Nodo obtenerNodo(int i) {
-        if (i < 0 || i >= longitud)
-            throw new IndexOutOfBoundsException();
-
-        if (elems.get(i) == null)
-            throw new NoSuchElementException();
-
         return elems.get(i);
     }
 
     public T obtener(int i) {
-        return obtenerNodo(i).dato;
+        Nodo nodo = obtenerNodo(i);
+
+        if (nodo == null) return null;
+
+        return nodo.dato;
     }
 
     public T eliminar(int i) {

@@ -47,14 +47,24 @@ public class Heap<T extends Comparable<T>> {
         int hijoIzq = 2 * i + 1;
         int hijoDer = 2 * i + 2;
 
-        if (hijoIzq < this.longitud
-                && nodos.obtener(heap[hijoIzq]).dato.compareTo(nodos.obtener(heap[masGrande]).dato) > 0) {
-            masGrande = hijoIzq;
+        if (hijoIzq < this.longitud) {
+            int idIzq = heap[hijoIzq];
+            int idMasGrande = heap[masGrande];
+            NodoHeap nodoIzq = nodos.obtener(idIzq);
+
+            if (nodoIzq != null && nodoIzq.dato.compareTo(nodos.obtener(idMasGrande).dato) > 0) {
+                masGrande = hijoIzq;
+            }
         }
 
-        if (hijoDer < this.longitud
-                && nodos.obtener(heap[hijoDer]).dato.compareTo(nodos.obtener(heap[masGrande]).dato) > 0) {
-            masGrande = hijoDer;
+        if (hijoDer < this.longitud) {
+            int idDer = heap[hijoDer];
+            int idMasGrande = heap[masGrande];
+            NodoHeap nodoDer = nodos.obtener(idDer);
+
+            if (nodoDer != null && nodoDer.dato.compareTo(nodos.obtener(idMasGrande).dato) > 0) {
+                masGrande = hijoDer;
+            }
         }
 
         if (masGrande == i)
@@ -115,16 +125,14 @@ public class Heap<T extends Comparable<T>> {
     }
 
     public T eliminarRaiz() {
-        NodoHeap nodo = this.nodos.eliminar(heap[0]);
-        T dato = nodo.dato;
-        heap[0] = heap[this.longitud - 1]; // Mueve el último elemento a la raíz
-        this.heap[this.longitud - 1] = -1; // Marca el último elemento como eliminado
+        int idUltimo = heap[this.longitud - 1];
 
+        swap(0, this.longitud - 1);
+        heap[this.longitud - 1] = -1;
         this.longitud--;
-
         siftDown(0);
 
-        return dato;
+        return nodos.eliminar(idUltimo).dato;
     }
 
     public int longitud() {

@@ -80,15 +80,15 @@ public class Berretacoin {
             int id_vendedor = transaccion.id_vendedor();
             int monto = transaccion.monto();
 
-            Usuario nuevoVendedor = new Usuario(id_vendedor, this.usuarios.obtener(id_vendedor).saldo() + monto);
+            Usuario nuevoVendedor = new Usuario(id_vendedor, this.usuarios.obtener(id_vendedor - 1).saldo() + monto);
 
             if (transaccion.esCreacion()) {
-                this.usuarios.modificar(id_vendedor, nuevoVendedor);
+                this.usuarios.modificar(id_vendedor - 1, nuevoVendedor);
             } else {
-                Usuario nuevoComprador = new Usuario(id_comprador, this.usuarios.obtener(id_comprador).saldo() - monto);
+                Usuario nuevoComprador = new Usuario(id_comprador, this.usuarios.obtener(id_comprador - 1).saldo() - monto);
 
-                this.usuarios.modificar(id_vendedor, nuevoVendedor);
-                this.usuarios.modificar(id_comprador, nuevoComprador);
+                this.usuarios.modificar(id_vendedor - 1, nuevoVendedor);
+                this.usuarios.modificar(id_comprador - 1, nuevoComprador);
 
                 montoTransacciones += monto;
                 cantidadTransacciones++;
@@ -120,7 +120,7 @@ public class Berretacoin {
 
     public int montoMedioUltimoBloque() {
         if (this.bloques.isEmpty() || ultimoBloque().cantidadTransacciones() == 0) {
-            return 0; // Evitar división por cero
+            return 0;
         }
 
         return ultimoBloque().montoTransacciones() / ultimoBloque().cantidadTransacciones();
@@ -140,15 +140,16 @@ public class Berretacoin {
         int id_comprador = elementoHackeado.id_comprador();
         int id_vendedor = elementoHackeado.id_vendedor();
         int monto = elementoHackeado.monto();
-        Usuario nuevoVendedor = new Usuario(id_vendedor, this.usuarios.obtener(id_vendedor).saldo() - monto);
+
+        Usuario nuevoVendedor = new Usuario(id_vendedor, this.usuarios.obtener(id_vendedor - 1).saldo() - monto);
 
         if (elementoHackeado.esCreacion()) {
-            this.usuarios.modificar(id_vendedor, nuevoVendedor);
+            this.usuarios.modificar(id_vendedor - 1, nuevoVendedor);
         } else {
-            Usuario nuevoComprador = new Usuario(id_comprador, this.usuarios.obtener(id_comprador).saldo() + monto);
+            Usuario nuevoComprador = new Usuario(id_comprador, this.usuarios.obtener(id_comprador - 1).saldo() + monto);
 
-            this.usuarios.modificar(id_vendedor, nuevoVendedor);
-            this.usuarios.modificar(id_comprador, nuevoComprador);
+            this.usuarios.modificar(id_vendedor - 1, nuevoVendedor);
+            this.usuarios.modificar(id_comprador - 1, nuevoComprador);
         }
     }
 }
