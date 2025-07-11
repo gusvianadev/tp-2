@@ -15,6 +15,17 @@ public class HeapTests {
         };
     }
 
+    private Transaccion[] crearTransaccionesConCreacion() {
+        return new Transaccion[] {
+                new Transaccion(0, 0, 1, 1),
+                new Transaccion(1, 1, 2, 4),
+                new Transaccion(2, 2, 1, 2)
+        };
+        // saldos
+        // 1 = $4 -> $5 -> $1 -> $3
+        // 2 =       $0 -> $4 -> $2
+    }
+
     @Test
     public void crearHeap() {
         Transaccion[] transacciones = crearTransacciones();
@@ -33,5 +44,26 @@ public class HeapTests {
         heap.eliminarRaiz();
         assertEquals(4, heap.longitud());
         assertEquals(2, heap.obtenerRaiz().id());
+    }
+
+    @Test
+    public void montoMedio(){
+        Berretacoin berretacoin = new Berretacoin(5);
+        Transaccion[] transacciones = crearTransaccionesConCreacion();
+
+        berretacoin.agregarBloque(transacciones);
+        // cantidad total de transacciones = 2 (sin la creacion)
+        assertEquals(2, berretacoin.cantidadTransacciones());
+        assertEquals(6, berretacoin.sumaMontos());
+        // monto medio
+        assertEquals(3, berretacoin.montoMedioUltimoBloque());
+
+        // hackear
+        berretacoin.hackearTx();
+        // cantidad total de transacciones = 1 (sin la creacion)
+        assertEquals(1, berretacoin.cantidadTransacciones());
+        assertEquals(2, berretacoin.sumaMontos());
+        // monto medio
+        assertEquals(2, berretacoin.montoMedioUltimoBloque());
     }
 }

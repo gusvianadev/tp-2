@@ -5,18 +5,16 @@ import java.util.ArrayList;
 public class Berretacoin {
 	private Heap<Usuario> usuarios;
 	private ArrayList<Bloque> bloques;
+	private int cantidadTransacciones;
+	private int sumaMontos;
 
 	public class Bloque{
 		private int id;
 		private Heap<Transaccion> transacciones;
-		private int sumaMontos;
-		private Boolean creacionDeleted;
 
-		Bloque(Transaccion[] transacciones, int sumaMontos) {
+		Bloque(Transaccion[] transacciones) {
 			this.id = bloques.size();
 			this.transacciones = new Heap<Transaccion>(transacciones);
-			this.sumaMontos = sumaMontos;
-			this.creacionDeleted = false;
 		}
 
 		public int id() {
@@ -29,18 +27,6 @@ public class Berretacoin {
 
 		public Transaccion[] transacciones() {
 			return this.transacciones.toArrayList().toArray(new Transaccion[this.transacciones.longitud()]);
-		}
-
-		public void setSumaMontos(int montos){
-			this.sumaMontos = montos;
-		}
-
-		public int getSumaMontos(){
-			return this.sumaMontos;
-		}
-
-		public void creacionDeleted(Boolean bool){
-			this.creacionDeleted = bool;
 		}
 	}
 
@@ -58,6 +44,7 @@ public class Berretacoin {
 
 	public void agregarBloque(Transaccion[] transacciones) {
 		int montos = 0;
+		int cantidad = 0;
 
 		for (int i = 0; i < transacciones.length; i++) {
 			Transaccion transaccion = transacciones[i];
@@ -72,6 +59,7 @@ public class Berretacoin {
 				this.usuarios.modificar(id_vendedor, nuevoVendedor);
 				montos -= transaccion.monto();
 			} else {
+				cantidad++;
 				Usuario nuevoComprador = new Usuario(transaccion.id_comprador(),
 						this.usuarios.obtener(id_comprador).saldo() - transaccion.monto());
 
@@ -80,8 +68,10 @@ public class Berretacoin {
 			}
 		}
 
-		Bloque bloque = new Bloque(transacciones, montos);
+		Bloque bloque = new Bloque(transacciones);
 		this.bloques.add(bloque);
+		this.cantidadTransacciones = cantidad;
+		this.sumaMontos = montos;
 	}
 
 	public Bloque ultimoBloque() {
@@ -104,34 +94,35 @@ public class Berretacoin {
 	}
 
 	public int montoMedioUltimoBloque() {
-		// El .size de un arrayList es O(1), asi que todo se devuelve en O(1)
-		int montos = this.bloques.get(bloques.size()-1).sumaMontos;
-		int longitud = this.bloques.get(bloques.size()-1).transacciones.longitud();
-		// Chequeamos si existe la transaccion de creacion para modificar la longitud
-		if(!this.ultimoBloque().creacionDeleted){
-			longitud--;
+		if(cantidadTransacciones > 0){
+			return sumaMontos / cantidadTransacciones;
 		}
-		if(longitud == 0){
-			return 0;
-		}
-
-		return montos / longitud;
+		return 0;
 	}
 
 	public void hackearTx() {
 		Bloque ultimoBloque = this.bloques.get(bloques.size()-1);
 		Transaccion txMax = this.txMayorValorUltimoBloque();
 
-		if(txMax.id() == 0){
-			ultimoBloque.creacionDeleted = true;
+		if(!txMax.esCreacion()){
+			cantidadTransacciones--;
+			this.sumaMontos -= txMax.monto();
 		}
 
 		if(txMax.id_comprador() > 0){
 			this.usuarios.modificar(txMax.id_comprador(), new Usuario(txMax.id_comprador(), usuarios.obtener(txMax.id_comprador()).saldo() + txMax.monto()));
-			ultimoBloque.sumaMontos = ultimoBloque.sumaMontos - txMax.monto();
+			
 		}
 		this.usuarios.modificar(txMax.id_vendedor(), new Usuario(txMax.id_vendedor(), usuarios.obtener(txMax.id_vendedor()).saldo() - txMax.monto()));
 		ultimoBloque.transacciones.eliminarRaiz();
 		
+	}
+
+	public int sumaMontos(){
+		return sumaMontos;
+	}
+
+	public int cantidadTransacciones(){
+		return cantidadTransacciones;
 	}
 }
