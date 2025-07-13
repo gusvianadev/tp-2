@@ -7,13 +7,15 @@ public class Heap<T extends Comparable<T>> {
 	private int[] heap;
 	private int longitud;
 
+	// Esta clase la hicimos porque necesitamos trackear el heapIndex pero el dato T
+	// no deberia tener heapIndex porque no deberia saber que es parte de un heap
 	private class NodoHeap {
 		T dato;
 		int heapIndex;
 
 		NodoHeap(T dato, int heapIndex) {
 			this.dato = dato;
-			this.heapIndex = heapIndex; // Inicialmente no está en el heap
+			this.heapIndex = heapIndex;
 		}
 	}
 
@@ -93,6 +95,7 @@ public class Heap<T extends Comparable<T>> {
 		NodoHeap nodoViejo = nodos.obtener(id);
 		T viejo = nodoViejo.dato;
 		int comparacion = nuevo.compareTo(viejo);
+
 		this.nodos.modificarPosicion(id, new NodoHeap(nuevo, nodoViejo.heapIndex));
 
 		if (comparacion == 0)
@@ -104,33 +107,38 @@ public class Heap<T extends Comparable<T>> {
 			siftUp(nodoViejo.heapIndex);
 	}
 
+	// O(n) + O(n) = O(n)
 	public ArrayList<T> toArrayList() {
+		// O(n)
 		ArrayList<T> arr = new ArrayList<T>(this.longitud);
 		Iterador<Heap<T>.NodoHeap> iterador = this.nodos.iterador();
 
+		// O(n)
 		while (iterador.haySiguiente())
 			arr.add(iterador.siguiente().dato);
 
 		return arr;
 	}
 
+	// O(log n)
 	public void eliminarRaiz() {
-		if(this.longitud == 1){
-
+		if (this.longitud == 1) {
 			this.nodos.eliminar(heap[0]);
 			this.heap[0] = -1;
 			this.longitud--;
-
 		} else {
-
 			this.nodos.eliminar(heap[0]);
 			heap[0] = heap[this.longitud - 1];
 			nodos.obtener(heap[0]).heapIndex = 0; // Cambia el heapIndex del nodo
-			this.heap[this.longitud - 1] = -1; // Mueve el último elemento a la raíz
+
+			// No es necesario tambien cambiar el heapIndex del último nodo ya que ese va a
+			// ser eliminado de todas formas
+
+			this.heap[this.longitud - 1] = -1; // Setea el último nodo como eliminado
 			this.longitud--;
+			// O(log n)
 			siftDown(0);
 		}
-
 	}
 
 	public int longitud() {
